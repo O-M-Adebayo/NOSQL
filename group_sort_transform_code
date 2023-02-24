@@ -1,0 +1,43 @@
+// We can define an aggregation pipeline using an array of aggregation stages. 
+// Grouping: group the documents in the collection by the 
+// "category" field using the $group stage, and count the number of documents 
+// in each group using the $sum aggregation operator.
+// Sort: We then sort the groups by count in descending order using the $sort stage,
+// and limit the number of results to the top 10 groups using the $limit stage.
+// Finally, we transform the output to a more readable format using the $project stage.
+
+// We can execute the aggregation pipeline using the aggregate method, and display 
+// the results using the toArray method and the printjson function.
+
+
+// ------------------------ BEGINNING OF THE CODE -------------------------- //
+
+// Connect to the MongoDB instance
+conn = new Mongo();
+db = conn.getDB("my_database");
+
+// Load the collection
+my_collection = db.my_collection;
+
+// Define the aggregation pipeline
+pipeline = [
+  // Group by the "category" field and count the number of documents in each group
+  {$group: {_id: "$category", count: {$sum: 1}}},
+  
+  // Sort the groups by count in descending order
+  {$sort: {count: -1}},
+  
+  // Limit the number of results to the top 10 groups
+  {$limit: 10},
+  
+  // Transform the output to a more readable format
+  {$project: {_id: 0, category: "$_id", count: 1}}
+];
+
+// Execute the aggregation pipeline
+results = my_collection.aggregate(pipeline);
+
+// Display the aggregation results
+printjson(results.toArray());
+
+// -------------------------- END OF THE CODE --------------------- //
