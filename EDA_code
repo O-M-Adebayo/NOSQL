@@ -1,0 +1,44 @@
+// This code gives you an overview of the content of your unstrucutred dataset.
+
+// We first connect to the MongoDB instance using the Mongo constructor,
+// and retrieve a handle to a database called "my_database" using the getDB method.
+// We then load a collection called "my_collection" using the my_collection variable.
+
+// We can count the number of documents in the collection using the count method,
+// and display the first 10 documents using the find and limit methods.
+
+// We can also perform various aggregation queries using the aggregate method.
+// For example, we can compute the average value of a specific field using the $avg 
+// aggregation operator and group the documents using the $group operator. We can also
+// compute the frequency distribution of a specific field using the $group, $sort, and $limit operators.
+
+// ------------------------- BEGINNING OF THE CODE ------------------------ //
+
+// Connect to the MongoDB instance
+conn = new Mongo();
+db = conn.getDB("my_database");
+
+// Load the collection
+my_collection = db.my_collection;
+
+// Count the number of documents in the collection
+print("Number of documents: ", my_collection.count());
+
+// Display the first 10 documents
+printjson(my_collection.find().limit(10).toArray());
+
+// Compute the average value of a specific field
+print("Average value of field_x: ", 
+      db.my_collection.aggregate([
+          { $group: { _id: null, avg: { $avg: "$field_x" } } }
+      ]).toArray()[0].avg);
+      
+// Compute the frequency distribution of a specific field
+printjson(db.my_collection.aggregate([
+    { $group: { _id: "$field_y", count: { $sum: 1 } } },
+    { $sort: { count: -1 } },
+    { $limit: 10 }
+]).toArray());
+
+
+// ------------------------------- END OF THE CODE --------------------------- //
