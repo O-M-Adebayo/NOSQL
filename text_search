@@ -1,0 +1,31 @@
+// We can create a text index on the "text_field" field using the createIndex
+// method and specifying the "text" option. This will enable text search
+// capabilities on the field.
+
+// We can then perform a text search for the keyword "example" using the
+// $text operator and the $search operator. This will return all documents
+// in the collection that contain the keyword in the "text_field" field.
+
+// Finally, we can display the search results using the toArray method
+// and the printjson function.
+
+// ---------------------------- BEGINNING OF THE CODE --------------------- //
+
+// Connect to the MongoDB instance
+conn = new Mongo();
+db = conn.getDB("my_database");
+
+// Load the collection
+my_collection = db.my_collection;
+
+// Create a text index on the "text_field" field
+my_collection.createIndex({text_field: "text"});
+
+// Perform a text search for the keyword "example"
+results = my_collection.find({$text: {$search: "example"}});
+
+// Display the search results
+printjson(results.toArray());
+
+
+// ------------------------ END OF THE CODE ---------------------- //
