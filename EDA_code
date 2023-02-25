@@ -1,4 +1,4 @@
-// This code gives you an overview of the content of your unstrucutred dataset.
+// This code gives you an overview of the content of your unstructured dataset.
 
 // We first connect to the MongoDB instance using the Mongo constructor,
 // and retrieve a handle to a database called "my_database" using the getDB method.
